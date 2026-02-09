@@ -53,8 +53,8 @@ client.on("messageCreate", async (message) => {
   }
 
   const output =
-    `User ${repliedMessage.author.username}: "${repliedMessage.content}"\n` +
-    `→ ${resultText}`;
+    `${repliedMessage.author.username}:  "${repliedMessage.content}"\n` +
+    `Coin:`;
 
   await message.reply({
     content: output,
@@ -63,3 +63,4 @@ client.on("messageCreate", async (message) => {
 });
 
 client.login(TOKEN);
+
