@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits } = require("discord.js");
+const { Client, GatewayIntentBits, EmbedBuilder } = require("discord.js");
 
 const client = new Client({
   intents: [
@@ -10,39 +10,57 @@ const client = new Client({
 
 const TOKEN = process.env.TOKEN;
 
-client.once("clientReady", () => {
+// 🔥 PUT YOUR IMAGE LINKS HERE
+const images = {
+  heads: "https://github.com/JoxicCodes/coinbot-for-discord/blob/main/heads.png",
+  tails: "https://github.com/JoxicCodes/coinbot-for-discord/blob/main/tails.png",
+  side: "https://github.com/JoxicCodes/coinbot-for-discord/blob/main/coinside.png",
+  notcoin: "https://github.com/JoxicCodes/coinbot-for-discord/blob/main/notacoin.png"
+};
+
+client.once("ready", () => {
   console.log(`🪙 Coin is online as ${client.user.tag}`);
 });
 
 client.on("messageCreate", async (message) => {
-  // Ignore bots
   if (message.author.bot) return;
-
-  // Must mention Coin
   if (!message.mentions.has(client.user)) return;
-
-  // Must be a reply
   if (!message.reference) return;
 
-  // Fetch the replied message
   const repliedMessage = await message.channel.messages.fetch(
     message.reference.messageId
   );
 
   if (!repliedMessage) return;
 
-  // Probability roll (0–99)
+  // 🎲 probability roll
   const roll = Math.random() * 100;
-  let result;
 
-  if (roll < 49) result = "🪙 Heads";
-  else if (roll < 98) result = "🪙 Tails";
-  else if (roll < 99) result = "🟡 It lands on its side";
-  else result = "❓ That is not a coin";
+  let resultText;
+  let imageUrl;
 
-  const output = `${repliedMessage.author.username}: "${repliedMessage.content}"\nCoin:\n ${result}`;
+  if (roll < 49) {
+    resultText = "Heads";
+    imageUrl = images.heads;
+  } else if (roll < 98) {
+    resultText = "Tails";
+    imageUrl = images.tails;
+  } else if (roll < 99) {
+    resultText = "It lands on its side";
+    imageUrl = images.side;
+  } else {
+    resultText = "That is not a coin";
+    imageUrl = images.notcoin;
+  }
 
-  await message.reply(output);
+  const embed = new EmbedBuilder()
+    .setTitle("🪙 Coin Flip")
+    .setDescription(
+      `User ${repliedMessage.author.username}: "${repliedMessage.content}"\n\n→ ${resultText}`
+    )
+    .setImage(imageUrl);
+
+  await message.reply({ embeds: [embed] });
 });
 
 client.login(TOKEN);
