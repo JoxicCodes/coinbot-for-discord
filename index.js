@@ -52,15 +52,18 @@ client.on("messageCreate", async (message) => {
     imageUrl = images.notcoin;
   }
 
+  // ✅ ONLY CHANGE IS HERE
+  const displayName =
+    repliedMessage.member?.displayName ?? repliedMessage.author.username;
+
   const output =
-    `${repliedMessage.author.username}:  "${repliedMessage.content}"\n` +
+    `${displayName}:  "${repliedMessage.content}"\n` +
     `Coin:`;
 
   await message.reply({
     content: output,
-    files: [imageUrl] // 👈 NORMAL MESSAGE + IMAGE
+    files: [imageUrl]
   });
 });
 
 client.login(TOKEN);
-
