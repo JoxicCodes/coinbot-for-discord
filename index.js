@@ -52,7 +52,6 @@ client.on("messageCreate", async (message) => {
     imageUrl = images.notcoin;
   }
 
-  // ✅ ONLY CHANGE IS HERE
   const displayName =
     repliedMessage.member?.displayName ?? repliedMessage.author.username;
 
@@ -60,7 +59,8 @@ client.on("messageCreate", async (message) => {
     `${displayName}:  "${repliedMessage.content}"\n` +
     `Coin:`;
 
-  await message.reply({
+  // ✅ ONLY CHANGE: send instead of reply
+  await message.channel.send({
     content: output,
     files: [imageUrl]
   });
