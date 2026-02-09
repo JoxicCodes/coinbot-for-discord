@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, EmbedBuilder } = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
 
 const client = new Client({
   intents: [
@@ -10,12 +10,12 @@ const client = new Client({
 
 const TOKEN = process.env.TOKEN;
 
-// 🔥 PUT YOUR IMAGE LINKS HERE
+// ✅ RAW GITHUB IMAGE LINKS (THIS IS IMPORTANT)
 const images = {
-  heads: "https://github.com/JoxicCodes/coinbot-for-discord/blob/main/heads.png",
-  tails: "https://github.com/JoxicCodes/coinbot-for-discord/blob/main/tails.png",
-  side: "https://github.com/JoxicCodes/coinbot-for-discord/blob/main/coinside.png",
-  notcoin: "https://github.com/JoxicCodes/coinbot-for-discord/blob/main/notacoin.png"
+  heads: "https://raw.githubusercontent.com/JoxicCodes/coinbot-for-discord/main/heads.png",
+  tails: "https://raw.githubusercontent.com/JoxicCodes/coinbot-for-discord/main/tails.png",
+  side: "https://raw.githubusercontent.com/JoxicCodes/coinbot-for-discord/main/coinside.png",
+  notcoin: "https://raw.githubusercontent.com/JoxicCodes/coinbot-for-discord/main/notacoin.png"
 };
 
 client.once("ready", () => {
@@ -33,7 +33,6 @@ client.on("messageCreate", async (message) => {
 
   if (!repliedMessage) return;
 
-  // 🎲 probability roll
   const roll = Math.random() * 100;
 
   let resultText;
@@ -53,14 +52,14 @@ client.on("messageCreate", async (message) => {
     imageUrl = images.notcoin;
   }
 
-  const embed = new EmbedBuilder()
-    .setTitle("🪙 Coin Flip")
-    .setDescription(
-      `User ${repliedMessage.author.username}: "${repliedMessage.content}"\n\n→ ${resultText}`
-    )
-    .setImage(imageUrl);
+  const output =
+    `User ${repliedMessage.author.username}: "${repliedMessage.content}"\n` +
+    `→ ${resultText}`;
 
-  await message.reply({ embeds: [embed] });
+  await message.reply({
+    content: output,
+    files: [imageUrl] // 👈 NORMAL MESSAGE + IMAGE
+  });
 });
 
 client.login(TOKEN);
